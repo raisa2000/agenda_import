@@ -19,13 +19,12 @@ users = db_table("agenda", {"id": "integer PRIMARY KEY",
 
 row_count = sheet.nrows
 col_count = sheet.ncols
-key = 1 
-for row in range(15, row_count+1):
+# key = 1 
+for row in range(15, row_count):
     values = [x for x in sheet.row_values(row)]
-    if "'" in values[4]: 
-        values[4] = values[4].replace("'","")
-    if "'" in values[6]:
-        values[6] = values[6].replace("'","")
+    for col in range(0, col_count):
+        if "'" in values[col]:
+            values[col] = values[col].replace("'","''")
 
     users.insert({"date": values[0], 
                 "time_start": values[1], 
@@ -35,7 +34,7 @@ for row in range(15, row_count+1):
                 "room_location": values[5], 
                 "description": values[6], 
                 "speakers": values[7]})
-    print(values)
-    print(key)
-    key = key + 1
+    # print(values)
+    # print(key)
+    # key = key + 1
 users.close()
