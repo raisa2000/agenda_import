@@ -2,10 +2,11 @@ from db_table import db_table
 import xlrd
 import sys
 
+# input looks like: $> ./import_agenda.py agenda.xls
 agenda = xlrd.open_workbook(sys.argv[1])
 sheet = agenda.sheet_by_index(0)
 # print(sheet)
-print(sys.argv[1])
+# print(sys.argv[1])
 # text vs string ? 
 users = db_table("agenda", {"id": "integer PRIMARY KEY", 
                             "date": "string", 
@@ -19,6 +20,7 @@ users = db_table("agenda", {"id": "integer PRIMARY KEY",
 
 row_count = sheet.nrows
 col_count = sheet.ncols
+# theres no need for key. creating and inserting the table automatically creates the primary key
 # key = 1 
 for row in range(15, row_count):
     values = [x for x in sheet.row_values(row)]
@@ -39,6 +41,6 @@ for row in range(15, row_count):
     # key = key + 1
 # print the database we populated
 for r in users.select():
-        print(r)
-        print("\n")
+    print(r)
+    print("\n")
 users.close()
