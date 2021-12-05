@@ -6,7 +6,7 @@ agenda = xlrd.open_workbook(sys.argv[1])
 sheet = agenda.sheet_by_index(0)
 # print(sheet)
 print(sys.argv[1])
-# text vs string
+# text vs string ? 
 users = db_table("agenda", {"id": "integer PRIMARY KEY", 
                             "date": "string", 
                             "time_start": "string NOT NULL", 
@@ -37,4 +37,8 @@ for row in range(15, row_count):
     # print(values)
     # print(key)
     # key = key + 1
+# print the database we populated
+for r in users.select():
+        print(r)
+        print("\n")
 users.close()
