@@ -1,34 +1,33 @@
 from db_table import db_table
 import xlrd
-# import sqlite3
 import sys
-import uuid
 
 agenda = xlrd.open_workbook(sys.argv[1])
 sheet = agenda.sheet_by_index(0)
 # print(sheet)
 print(sys.argv[1])
-# schema = [x for x in sheet.row_values(18)]
-# print(schema)
 # text vs string
-users = db_table("agenda", { "id": "integer PRIMARY KEY", 
+users = db_table("agenda", {"id": "integer PRIMARY KEY", 
                             "date": "string", 
                             "time_start": "string NOT NULL", 
                             "time_end": "string NOT NULL", 
                             "session_sub": "string NOT NULL", 
                             "session_title": "string NOT NULL", 
                             "room_location": "string NOT NULL", 
-                            "description": "text", 
-                            "speakers": "text"})
+                            "description": "string", 
+                            "speakers": "string"})
 
 row_count = sheet.nrows
 col_count = sheet.ncols
-key = 0
-for row in range(9, 13):
+key = 1 
+for row in range(15, row_count+1):
     values = [x for x in sheet.row_values(row)]
-    print(values)
-    users.insert({"id": key, 
-                "date": values[0], 
+    if "'" in values[4]: 
+        values[4] = values[4].replace("'","")
+    if "'" in values[6]:
+        values[6] = values[6].replace("'","")
+
+    users.insert({"date": values[0], 
                 "time_start": values[1], 
                 "time_end": values[2], 
                 "session_sub": values[3], 
@@ -36,6 +35,7 @@ for row in range(9, 13):
                 "room_location": values[5], 
                 "description": values[6], 
                 "speakers": values[7]})
-    print(users)
+    print(values)
+    print(key)
     key = key + 1
 users.close()
